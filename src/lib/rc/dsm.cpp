@@ -135,7 +135,7 @@ static bool dsm_decode_channel(uint16_t raw, unsigned shift, uint8_t &channel, u
 
 		// Spektrum range is 903μs to 2097μs (Specification for Spektrum Remote Receiver Interfacing Rev G 9.1)
 		//  ±100% travel is 1102µs to 1898 µs
-		if (value < 990 || value > 2010) {
+		if (value < 903 || value > 2097) {
 			// if the value is unrealistic, fail the parsing entirely
 			PX4_DEBUG("channel %d invalid range %d", channel, value);
 			return false;
@@ -190,7 +190,7 @@ static bool dsm_decode_channel(uint16_t raw, unsigned shift, uint8_t &channel, u
 
 		// Spektrum range is 903μs to 2097μs (Specification for Spektrum Remote Receiver Interfacing Rev G 9.1)
 		//  ±100% travel is 1102µs to 1898 µs
-		if (value < 990 || value > 2010) {
+		if (value < 903 || value > 2097) {
 			// if the value is unrealistic, fail the parsing entirely
 			PX4_DEBUG("channel %d invalid range %d", channel, value);
 			return false;
