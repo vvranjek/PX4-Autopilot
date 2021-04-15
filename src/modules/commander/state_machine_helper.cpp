@@ -281,7 +281,7 @@ transition_result_t arming_state_transition(vehicle_status_s &status, const safe
 }
 
 transition_result_t
-main_state_transition(const vehicle_status_s &status, const main_state_t new_main_state,
+main_state_transition(orb_advert_t *mavlink_log_pub, const vehicle_status_s &status, const main_state_t new_main_state,
 		      const vehicle_status_flags_s &status_flags, commander_state_s &internal_state)
 {
 	// IMPORTANT: The assumption of callers of this function is that the execution of
@@ -346,6 +346,14 @@ main_state_transition(const vehicle_status_s &status, const main_state_t new_mai
 
 			ret = TRANSITION_CHANGED;
 		}
+		if (!status_flags.condition_global_position_valid) {
+		    mavlink_log_critical(mavlink_log_pub, "GPS not available")
+		}
+
+		if (!status_flags.condition_auto_mission_available) {
+		    mavlink_log_critical(mavlink_log_pub, "Auto mission not available")
+		}
+
 
 		break;
 
@@ -829,7 +837,7 @@ void set_link_loss_nav_state(vehicle_status_s &status, actuator_armed_s &armed,
 
 	case link_loss_actions_t::AUTO_RTL:
 		if (status_flags.condition_global_position_valid && status_flags.condition_home_position_valid) {
-			main_state_transition(status, commander_state_s::MAIN_STATE_AUTO_RTL, status_flags, internal_state);
+            main_state_transition(nullptr, status, commander_state_s::MAIN_STATE_AUTO_RTL, status_flags, internal_state);
 			status.nav_state = vehicle_status_s::NAVIGATION_STATE_AUTO_RTL;
 			return;
 		}

@@ -122,7 +122,7 @@ arming_state_transition(vehicle_status_s &status, const safety_s &safety, const 
 			const hrt_abstime &time_since_boot, arm_disarm_reason_t calling_reason);
 
 transition_result_t
-main_state_transition(const vehicle_status_s &status, const main_state_t new_main_state,
+main_state_transition(orb_advert_t *mavlink_log_pub, const vehicle_status_s &status, const main_state_t new_main_state,
 		      const vehicle_status_flags_s &status_flags, commander_state_s &internal_state);
 
 void enable_failsafe(vehicle_status_s &status, bool old_failsafe, orb_advert_t *mavlink_log_pub, const char *reason);
